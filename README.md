@@ -52,6 +52,7 @@ export ANTHROPIC_API_KEY="sk-ant-xxxxx"
 | 提供商 | 默认模型 | API Key 获取 |
 |--------|----------|-------------|
 | Claude ⭐ | claude-opus-4-6 | [console.anthropic.com](https://console.anthropic.com) → API Keys |
+| OpenRouter | anthropic/claude-opus-4-6 | [openrouter.ai](https://openrouter.ai) → Keys，支持数百个模型 |
 | MiniMax | MiniMax-Text-01 | [platform.minimaxi.com](https://platform.minimaxi.com) → API 密钥 |
 | Gemini | gemini-2.0-flash | [aistudio.google.com](https://aistudio.google.com) → Get API Key |
 

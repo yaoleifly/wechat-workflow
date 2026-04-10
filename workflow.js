@@ -220,13 +220,16 @@ export async function runStep(stepIdx, topic, prevResult, onStream, config = {})
   const prompt = buildPrompt(stepIdx, topic, prevResult);
 
   if (provider === "minimax") {
-    return runWithOpenAICompat(prompt, apiKey, "MiniMax-Text-01",
+    return runWithOpenAICompat(prompt, apiKey, model || "MiniMax-Text-01",
       "https://api.minimaxi.chat/v1", onStream);
   } else if (provider === "gemini") {
-    return runWithOpenAICompat(prompt, apiKey, "gemini-2.0-flash",
+    return runWithOpenAICompat(prompt, apiKey, model || "gemini-2.0-flash",
       "https://generativelanguage.googleapis.com/v1beta/openai/", onStream);
+  } else if (provider === "openrouter") {
+    return runWithOpenAICompat(prompt, apiKey, model || "anthropic/claude-opus-4-6",
+      "https://openrouter.ai/api/v1", onStream);
   } else {
-    return runWithClaude(prompt, apiKey, "claude-opus-4-6", onStream);
+    return runWithClaude(prompt, apiKey, model || "claude-opus-4-6", onStream);
   }
 }
 
@@ -242,6 +245,12 @@ export async function validateKey(provider, apiKey) {
       const client = new OpenAI({ apiKey, baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/" });
       await client.chat.completions.create({
         model: "gemini-2.0-flash", max_tokens: 1,
+        messages: [{ role: "user", content: "hi" }],
+      });
+    } else if (provider === "openrouter") {
+      const client = new OpenAI({ apiKey, baseURL: "https://openrouter.ai/api/v1" });
+      await client.chat.completions.create({
+        model: "openai/gpt-4o-mini", max_tokens: 1,
         messages: [{ role: "user", content: "hi" }],
       });
     } else {

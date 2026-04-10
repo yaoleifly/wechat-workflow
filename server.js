@@ -163,18 +163,19 @@ const STEPS=[
 
 const PROVIDERS={
   claude:{label:"Claude ⭐",model:"claude-opus-4-6",keyPlaceholder:"Anthropic API Key (sk-ant-...)",tip:"如何获取 Claude API Key&#10;&#10;1. 访问 console.anthropic.com&#10;2. 注册并登录 Anthropic 账户&#10;3. 左侧菜单点击 API Keys&#10;4. 点击 Create Key 即可"},
+  openrouter:{label:"OpenRouter",model:"anthropic/claude-opus-4-6",keyPlaceholder:"OpenRouter API Key (sk-or-...)",tip:"如何获取 OpenRouter API Key&#10;&#10;1. 访问 openrouter.ai&#10;2. 注册并登录账户&#10;3. 右上角头像 → Keys&#10;4. 点击 Create Key&#10;&#10;支持 Claude、GPT、Gemini 等数百个模型"},
   minimax:{label:"MiniMax",model:"MiniMax-Text-01",keyPlaceholder:"MiniMax API Key",tip:"如何获取 MiniMax API Key&#10;&#10;1. 访问 platform.minimaxi.com&#10;2. 注册并登录账户&#10;3. 右上角头像 → API 密钥&#10;4. 点击创建新密钥"},
   gemini:{label:"Gemini",model:"gemini-2.0-flash",keyPlaceholder:"Google AI API Key",tip:"如何获取 Gemini API Key&#10;&#10;1. 访问 aistudio.google.com&#10;2. 使用 Google 账号登录&#10;3. 左侧点击 Get API Key&#10;4. 点击 Create API key"}
 };
 
-const _k={claude:localStorage.getItem('wf_key_claude')||"",minimax:localStorage.getItem('wf_key_minimax')||"",gemini:localStorage.getItem('wf_key_gemini')||""};
+const _k={claude:localStorage.getItem('wf_key_claude')||"",openrouter:localStorage.getItem('wf_key_openrouter')||"",minimax:localStorage.getItem('wf_key_minimax')||"",gemini:localStorage.getItem('wf_key_gemini')||""};
 let state={
   topic:"",provider:localStorage.getItem('wf_provider')||"claude",
-  apiKeys:{claude:_k.claude,minimax:_k.minimax,gemini:_k.gemini},
-  keyDraft:{claude:_k.claude,minimax:_k.minimax,gemini:_k.gemini},
-  modelInput:{claude:localStorage.getItem('wf_model_claude')||'claude-opus-4-6',minimax:localStorage.getItem('wf_model_minimax')||'MiniMax-Text-01',gemini:localStorage.getItem('wf_model_gemini')||'gemini-2.0-flash'},
-  keyStatus:{claude:_k.claude?'valid':null,minimax:_k.minimax?'valid':null,gemini:_k.gemini?'valid':null},
-  keyError:{claude:"",minimax:"",gemini:""},
+  apiKeys:{claude:_k.claude,openrouter:_k.openrouter,minimax:_k.minimax,gemini:_k.gemini},
+  keyDraft:{claude:_k.claude,openrouter:_k.openrouter,minimax:_k.minimax,gemini:_k.gemini},
+  modelInput:{claude:localStorage.getItem('wf_model_claude')||'claude-opus-4-6',openrouter:localStorage.getItem('wf_model_openrouter')||'anthropic/claude-opus-4-6',minimax:localStorage.getItem('wf_model_minimax')||'MiniMax-Text-01',gemini:localStorage.getItem('wf_model_gemini')||'gemini-2.0-flash'},
+  keyStatus:{claude:_k.claude?'valid':null,openrouter:_k.openrouter?'valid':null,minimax:_k.minimax?'valid':null,gemini:_k.gemini?'valid':null},
+  keyError:{claude:"",openrouter:"",minimax:"",gemini:""},
   keyVisible:false,
   running:false,paused:false,currentStep:-1,results:{},activeView:0,editMode:false,editText:"",savedPath:""
 };
