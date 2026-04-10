@@ -130,6 +130,11 @@ textarea.edit{width:100%;min-height:380px;padding:16px;font-size:14px;font-famil
 .tab{padding:6px 16px;font-size:13px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg2);cursor:pointer;font-family:inherit;transition:all .15s}
 .tab.active{background:var(--accent-l);border-color:var(--accent);color:var(--accent);font-weight:600}
 .tab:disabled{opacity:.4;cursor:default}
+.model-input-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.model-label{font-size:12px;color:var(--fg3);white-space:nowrap;width:28px}
+.model-input{flex:1;padding:8px 12px;font-size:13px;font-family:monospace;border:1.5px solid var(--border);border-radius:var(--r);background:var(--bg);color:var(--fg);outline:none;transition:border .2s}
+.model-input:focus{border-color:var(--accent)}
+.model-input:disabled{opacity:.5}
 .model-key-row{display:flex;gap:8px;align-items:center}
 .model-sel{padding:9px 12px;font-size:13px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--bg);color:var(--fg);font-family:inherit;outline:none;cursor:pointer}
 .key-input{flex:1;padding:9px 14px;font-size:13px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--bg);color:var(--fg);font-family:monospace;outline:none;transition:border .2s}
@@ -167,6 +172,7 @@ let state={
   topic:"",provider:localStorage.getItem('wf_provider')||"claude",
   apiKeys:{claude:_k.claude,minimax:_k.minimax,gemini:_k.gemini},
   keyDraft:{claude:_k.claude,minimax:_k.minimax,gemini:_k.gemini},
+  modelInput:{claude:localStorage.getItem('wf_model_claude')||'claude-opus-4-6',minimax:localStorage.getItem('wf_model_minimax')||'MiniMax-Text-01',gemini:localStorage.getItem('wf_model_gemini')||'gemini-2.0-flash'},
   keyStatus:{claude:_k.claude?'valid':null,minimax:_k.minimax?'valid':null,gemini:_k.gemini?'valid':null},
   keyError:{claude:"",minimax:"",gemini:""},
   keyVisible:false,
@@ -201,7 +207,7 @@ async function runStepSSE(stepIdx,topic,prevResult){
   const res=await fetch('/api/step',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({stepIdx,topic,prevResult,apiKey:state.apiKeys[state.provider],provider:state.provider})
+    body:JSON.stringify({stepIdx,topic,prevResult,apiKey:state.apiKeys[state.provider],provider:state.provider,model:state.modelInput[state.provider]})
   });
   const reader=res.body.getReader();
   const dec=new TextDecoder();
@@ -271,6 +277,10 @@ function render(){
   Object.entries(PROVIDERS).forEach(([id,p])=>{
     h+='<button class="tab'+(s.provider===id?' active':'')+'" '+(s.running?'disabled':'')+' onclick="setProvider(\\''+id+'\\')">' +p.label+'</button>';
   });
+  h+='</div>';
+  h+='<div class="model-input-row">';
+  h+='<span class="model-label">模型</span>';
+  h+='<input type="text" class="model-input" value="'+esc(s.modelInput[s.provider])+'" placeholder="模型名称" '+(s.running?'disabled':'')+' oninput="onModelInput(this.value)">';
   h+='</div>';
   const kst=s.keyStatus[s.provider];
   const kdraft=s.keyDraft[s.provider];
@@ -363,6 +373,8 @@ function render(){
   // innerHTML 复用 DOM 时 value attribute 不覆盖 value property，需手动同步
   const ki=document.querySelector('.key-input');
   if(ki) ki.value=state.keyDraft[state.provider];
+  const mi=document.querySelector('.model-input');
+  if(mi) mi.value=state.modelInput[state.provider];
 
   const input=document.getElementById('topicInput');
   if(input){
@@ -383,6 +395,7 @@ function copyFinal(){
 }
 
 function setProvider(p){localStorage.setItem('wf_provider',p);setState({provider:p,keyVisible:false});}
+function onModelInput(v){const p=state.provider;state.modelInput[p]=v;localStorage.setItem('wf_model_'+p,v);}
 function onKeyInput(v){
   const p=state.provider;
   state.keyDraft[p]=v;

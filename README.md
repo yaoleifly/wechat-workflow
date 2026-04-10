@@ -47,15 +47,15 @@ export ANTHROPIC_API_KEY="sk-ant-xxxxx"
 
 ### 选择模型
 
-页面顶部选择模型提供商，默认使用各家最新最强模型：
+页面顶部选择模型提供商，填入对应的模型名称（预填了常用默认值，可自行修改）：
 
-| 提供商 | 模型 | API Key 获取 |
-|--------|------|-------------|
+| 提供商 | 默认模型 | API Key 获取 |
+|--------|----------|-------------|
 | Claude ⭐ | claude-opus-4-6 | [console.anthropic.com](https://console.anthropic.com) → API Keys |
 | MiniMax | MiniMax-Text-01 | [platform.minimaxi.com](https://platform.minimaxi.com) → API 密钥 |
 | Gemini | gemini-2.0-flash | [aistudio.google.com](https://aistudio.google.com) → Get API Key |
 
-输入框旁的 `?` 按钮悬浮可查看各家 Key 的获取步骤。
+模型名称和 API Key 均保存在浏览器本地（localStorage），下次打开无需重填。输入框旁的 `?` 按钮悬浮可查看各家 Key 的获取步骤。
 
 ### 填写 API Key
 
