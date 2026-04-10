@@ -1,0 +1,18 @@
+{
+  "name": "wechat-workflow",
+  "version": "1.0.0",
+  "description": "微信公众号全流程创作工作台 - 自动化 9 步工作流",
+  "type": "module",
+  "scripts": {
+    "start": "node cli.js",
+    "serve": "node server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "chalk": "^5.3.0",
+    "express": "^4.21.0",
+    "inquirer": "^12.0.0",
+    "openai": "^6.34.0",
+    "ora": "^8.1.0"
+  }
+}
